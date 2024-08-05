@@ -30,43 +30,22 @@ Aqui está um exemplo básico de como usar a função `vikor`:
 
 ```python
 import numpy as np
-from vikor import vikor, generate_comparison_string
+import pyvikor as pvk
 
 # Definir a matriz de decisão
-matrix = np.array([
+mtx = np.array([
     [1, 3000],
     [2, 3750],
     [5, 4500]
 ])
 
 # Estabelecer os pesos
-weights = np.array([0.5, 0.5])
+w = np.array([0.5, 0.5])
 
 # Definir os tipos de critério
-criteria_type = ['minimização', 'maximização']
+ctr_type = ['minimização', 'maximização']
 
-# Executar o algoritmo VIKOR
-rank_Q, rank_S, rank_R, Q, S, R = vikor(matrix, weights, criteria_type)
-
-if rank_Q is not None:
-    print("Valores S:", S)
-    print("Valores R:", R)
-    print("Valores Q:", Q)
-    print()
-
-    print("Ranking S:", rank_S)
-    print("Ranking R:", rank_R)
-    print("Ranking Q:", rank_Q)
-    print()
-
-    comparison_string_S = generate_comparison_string(S, "S")
-    comparison_string_R = generate_comparison_string(R, "R")
-    comparison_string_Q = generate_comparison_string(Q, "Q")
-
-    print("Ranking Final das Alternativas:")
-    print(comparison_string_S)
-    print(comparison_string_R)
-    print(comparison_string_Q)
+pvk.vikor(mtx, w, ctr_type)
 ```
 
 ### Funções
