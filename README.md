@@ -12,9 +12,10 @@ Este repositório fornece uma implementação em Python do algoritmo do método,
 
 ## Funcionalidades
 
-- **Calculo dos Índices**: Calcula os índices \(Q\), \(S\) e \(R\) para avaliar as alternativas.
+- **Cálculo dos Índices**: Calcula os índices \(Q\), \(S\) e \(R\) para avaliar as alternativas.
 - **Classificação**: Classifica as alternativas com base nos índices calculados.
 - **Comparação**: Gera strings de comparação para os índices \(Q\), \(S\) e \(R\) com base em suas ordens.
+- **Normalização com Métrica LP**: A matriz de decisão é normalizada utilizando a métrica L2 (um caso específico da métrica LP com \( p = 2 \)), que normaliza os valores de cada critério (coluna) com base na raiz quadrada da soma dos quadrados dos valores da coluna. Isso assegura que cada critério seja comparável, independentemente de sua escala original.
 
 ## Instalação
 
@@ -67,3 +68,5 @@ O código inclui tratamento de exceções para garantir que as entradas estejam 
 ## Licença
 
 Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para detalhes.
+
+--- 
