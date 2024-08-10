@@ -23,36 +23,49 @@ def vikor(matrix, weights, criteria_type, v=0.5):
         # Verificar se a quantidade de critérios corresponde ao tipo de critério
         assert m == len(criteria_type), "A quantidade de critérios fornecida é diferente da quantidade de tipos de critérios."
 
-        # Passo 1: Determinar os valores ideais e anti-ideais
+        # Matriz de Decisão definida
+        print("Matriz de Decisão:")
+        print(f"{matrix} \n")
+
+        # Passo 1: Matriz de Decisão Normalizada
+        norm_matrix = np.zeros_like(matrix, dtype=float)
+        for j in range(m):
+            column_sum_square = np.sqrt(np.sum(matrix[:, j] ** 2))
+            norm_matrix[:, j] = matrix[:, j] / column_sum_square
+
+        print("Matriz Normalizada:")
+        print(f"{norm_matrix} \n")
+
+        # Passo 2: Determinar os valores ideais e anti-ideais
         ideal_best = np.zeros(m)
         ideal_worst = np.zeros(m)
 
         for j in range(m):
             if criteria_type[j] == 'maximização':
-                ideal_best[j] = np.max(matrix[:, j])
-                ideal_worst[j] = np.min(matrix[:, j])
+                ideal_best[j] = np.max(norm_matrix[:, j])
+                ideal_worst[j] = np.min(norm_matrix[:, j])
             elif criteria_type[j] == 'minimização':
-                ideal_best[j] = np.min(matrix[:, j])
-                ideal_worst[j] = np.max(matrix[:, j])
+                ideal_best[j] = np.min(norm_matrix[:, j])
+                ideal_worst[j] = np.max(norm_matrix[:, j])
             else:
                 raise ValueError("Os critérios devem ser 'maximização' ou 'minimização'.")
 
-        # Passo 2: Calcular S e R para cada alternativa
+        # Passo 3: Calcular S e R para cada alternativa
         s = np.zeros(n)
         r = np.zeros(n)
         for i in range(n):
             for j in range(m):
                 if criteria_type[j] == 'maximização':
-                    s[i] += weights[j] * (ideal_best[j] - matrix[i, j]) / (ideal_best[j] - ideal_worst[j])
-                    r[i] = max(r[i], weights[j] * (ideal_best[j] - matrix[i, j]) / (ideal_best[j] - ideal_worst[j]))
+                    s[i] += weights[j] * (ideal_best[j] - norm_matrix[i, j]) / (ideal_best[j] - ideal_worst[j])
+                    r[i] = max(r[i], weights[j] * (ideal_best[j] - norm_matrix[i, j]) / (ideal_best[j] - ideal_worst[j]))
                 elif criteria_type[j] == 'minimização':
-                    s[i] += weights[j] * (matrix[i, j] - ideal_best[j]) / (ideal_worst[j] - ideal_best[j])
-                    r[i] = max(r[i], weights[j] * (matrix[i, j] - ideal_best[j]) / (ideal_worst[j] - ideal_best[j]))
+                    s[i] += weights[j] * (norm_matrix[i, j] - ideal_best[j]) / (ideal_worst[j] - ideal_best[j])
+                    r[i] = max(r[i], weights[j] * (norm_matrix[i, j] - ideal_best[j]) / (ideal_worst[j] - ideal_best[j]))
 
         print("Valores S:", s)
         print("Valores R:", r)
 
-        # Passo 3: Calcular Q para cada alternativa
+        # Passo 4: Calcular Q para cada alternativa
         s_star = np.min(s)
         s_worst = np.max(s)
         r_star = np.min(r)
